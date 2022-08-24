@@ -6,5 +6,9 @@ CREATE TABLE animals (
     date_of_birth date,
     escape_attempts INT,
     neutered boolean,
-    weight_kg decimal
+    weight_kg decimal,
+/* add a new column 
+ALTER TABLE animals
+ADD COLUMN spacies VARCHAR(100); */
+    spacies varchar(100)
 );
