@@ -32,9 +32,8 @@ Give a ⭐️ if you like this project!
 
 ## Acknowledgments
 
-- Hat tip to anyone whose code was used
-- Inspiration
-- etc
+- [Microverse](https://www.microverse.org/) curriculum materials
+- [PostgreSQL](https://www.postgresql.org/) documentation
 
 ## 📝 License
 
