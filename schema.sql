@@ -7,8 +7,33 @@ CREATE TABLE animals (
     escape_attempts INT,
     neutered boolean,
     weight_kg decimal,
-/* add a new column 
-ALTER TABLE animals
-ADD COLUMN spacies VARCHAR(100); */
-    spacies varchar(100)
+    owner_id INT,
+    CONSTRAINT constraint_fk
+      FOREIGN KEY(owner_id) 
+	    REFERENCES owner(id)
+        species_id INT,
+    CONSTRAINT species_fk
+      FOREIGN KEY(species_id) 
+	    REFERENCES species(id)
 );
+
+/* Milestone-3 */
+
+ALTER TABLE animals
+DROP COLUMN species;
+
+ALTER TABLE animals
+ADD COLUMN owner_id INT;
+
+CREATE TABLE owner (
+    id INT GENERATED ALWAYS AS IDENTITY, 
+    full_name VARCHAR(100), 
+    age INT, 
+    PRIMARY KEY(id)
+    );
+
+CREATE TABLE species (
+    id INT GENERATED ALWAYS AS IDENTITY, 
+    name VARCHAR(100), 
+    PRIMARY KEY(id)
+    );
