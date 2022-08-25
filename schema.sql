@@ -19,6 +19,12 @@ CREATE TABLE animals (
 
 /* Milestone-3 */
 
+ALTER TABLE animals
+DROP COLUMN species;
+
+ALTER TABLE animals
+ADD COLUMN owner_id INT;
+
 CREATE TABLE owner (
     id INT GENERATED ALWAYS AS IDENTITY, 
     full_name VARCHAR(100), 
