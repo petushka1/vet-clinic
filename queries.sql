@@ -88,5 +88,127 @@ SELECT t.*
         ) AS tt
     );
 
+/* Milestone-4 */
+
+/* Who was the last animal seen by William Tatcher? */
+
+SELECT VISIT.animals_id, VISIT.last_visit, VISIT.animal_name 
+    FROM (
+        SELECT v.animals_id, v.vets_id, v.visitation_date last_visit, a.name animal_name
+        FROM visits v 
+        JOIN vets vet ON v.vets_id = vet.id
+        JOIN animals a ON a.id = v.animals_id
+        WHERE vet.name = 'William Tatcher' 
+    ) AS VISIT
+GROUP BY VISIT.animals_id, VISIT.animal_name, VISIT.last_visit
+HAVING VISIT.last_visit = ( 
+    SELECT MAX(VISIT2.visitation_date) FROM visits VISIT2
+    JOIN vets v2 ON v2.id = VISIT2.vets_id
+    WHERE v2.name = 'William Tatcher'
+    GROUP BY VISIT2.vets_id
+);
+
+/* How many different animals did Stephanie Mendez see? */
+
+SELECT VISIT.animal_name, VISIT.vets_id, VISIT.vet_name veterinar
+    FROM (
+        SELECT v.animals_id, v.vets_id, vet.name vet_name, a.name animal_name
+        FROM visits v 
+        JOIN vets vet ON v.vets_id = vet.id
+        JOIN animals a ON a.id = v.animals_id
+        WHERE vet.name = 'Stephanie Mendez'
+    ) AS VISIT;
+
+
+/* List all vets and their specialties, including vets with no specialties. */
+
+SELECT v.id, v.name vet_name, X.specialized_on 
+FROM vets v 
+  LEFT JOIN (
+    SELECT SPEC.vets_id, s.name specialized_on FROM specializations SPEC
+      JOIN species s ON s.id = SPEC.species_id
+  ) AS X
+  ON X.vets_id = v.id 
+ORDER BY v.id;
+
+/* List all animals that visited Stephanie Mendez between April 1st and August 30th, 2020 */
+
+SELECT a.name, VISIT.visitation_date date, vet.name veterinar
+FROM visits VISIT
+JOIN animals a ON a.id = VISIT.animals_id
+JOIN vets vet ON vet.id = VISIT.vets_id
+WHERE vet.name = 'Stephanie Mendez'
+GROUP BY date, a.name, veterinar
+HAVING VISIT.visitation_date BETWEEN '2020-04-01' AND '2020-08-30';
+
+/* What animal has the most visits to vets? */
+
+SELECT COUNT(V.animals_id) max_visit, a.name animal_name, a.id
+FROM visits V 
+    JOIN animals a ON V.animals_id = a.id
+GROUP BY a.id, animal_name
+HAVING COUNT(V.animals_id) = (
+    SELECT MAX(V2.total)
+    FROM (
+        SELECT COUNT(MV.animals_id) total 
+        FROM visits MV
+        GROUP BY MV.animals_id
+    ) V2
+);
+
+/* Who was Maisy Smith's first visit? */
+
+    SELECT v.visitation_date, vet.name veterinar, a.name animal
+        FROM visits v 
+        JOIN vets vet ON vet.id = v.vets_id
+        JOIN animals a ON v.animals_id = a.id
+        WHERE vet.name = 'Maisy Smith'
+        GROUP BY  v.visitation_date, vet.name, a.name
+        HAVING v.visitation_date = (SELECT MIN(VD.visitation_date)
+        FROM visits VD
+        JOIN vets vet2 ON vet2.id = VD.vets_id
+    WHERE vet2.name = 'Maisy Smith'
+    );
+
+/* Details for most recent visit: animal information, vet information, and date of visit */
+
+SELECT a.id animal_id, a.name animal_name, a.weight_kg animal_weight, v.id vet_id, v.name vet_name, 
+  VISIT.visitation_date latest_visit
+FROM visits VISIT
+  JOIN vets v ON v.id = VISIT.vets_id 
+  JOIN animals a ON a.id = VISIT.animals_id
+WHERE VISIT.visitation_date = (SELECT MAX(visitation_date) FROM visits);
+
+/* How many visits were with a vet that did not specialize in that animal's species? */
+
+SELECT COUNT(RES.animal_type_id)
+FROM (
+SELECT v.id vet_id, a.id, a.species_id animal_type_id, VISIT.vets_id, VISIT.animals_id
+    FROM visits VISIT 
+    JOIN vets v ON VISIT.vets_id = v.id
+    JOIN animals a ON a.id = VISIT.animals_id
+) AS RES
+
+JOIN specializations spec ON spec.vets_id = RES.vet_id
+WHERE RES.animal_type_id <> spec.vets_id;
+
+/* What specialty should Maisy Smith consider getting? Look for the species she gets the most. */
+
+SELECT RES2.name, RES2.count
+FROM (
+SELECT S.name, RES.animal_type_id, COUNT(RES.animal_type_id)
+FROM (
+    SELECT a.id animal_id, a.species_id animal_type_id 
+    FROM visits VISIT 
+    JOIN vets v ON v.id = VISIT.vets_id
+    JOIN animals a ON a.id = VISIT.animals_id
+    WHERE v.name = 'Maisy Smith'
+) AS RES
+JOIN species S ON S.id = RES.animal_type_id
+GROUP BY S.name, RES.animal_type_id
+) AS RES2
+GROUP BY RES2.name, RES2.count
+ORDER BY RES2.count DESC
+LIMIT 1;
 
 
