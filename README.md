@@ -14,10 +14,18 @@ This repository includes files with plain SQL that can be used to recreate a dat
 
 ## Authors
 
-👤 **Author1**
+👤 **Nadya**
 
 - GitHub: [@petushka1](https://github.com/petushka1)
 - LinkedIn: [LinkedIn](http://www.linkedin.com/in/nadyalevina)
+
+## Collaborators
+
+👤 **Toma**
+
+- GitHub: [Kamba56](https://github.com/Kamba56)
+
+
 
 
 ## 🤝 Contributing

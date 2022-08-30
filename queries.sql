@@ -212,3 +212,15 @@ ORDER BY RES2.count DESC
 LIMIT 1;
 
 
+/* WEEK 2 */
+/* check if query execution takes not less than 1000 ms */
+
+SELECT COUNT(*) FROM visits where animals_id = 4;
+-- one more insertion requered
+
+/* Check queries runtime */
+
+SELECT COUNT(*) FROM visits where animals_id = 4;
+SELECT * FROM visits where vets_id = 2;
+SELECT * FROM owner where email = 'owner_18327@mail.com';
+-- 1 sec = 1000ms can be considered as too much time for database query
