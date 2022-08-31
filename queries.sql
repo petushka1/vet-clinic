@@ -224,3 +224,5 @@ SELECT COUNT(*) FROM visits where animals_id = 4;
 SELECT * FROM visits where vets_id = 2;
 SELECT * FROM owner where email = 'owner_18327@mail.com';
 -- 1 sec = 1000ms can be considered as too much time for database query
+
+/* DATABASE PERFORMANCE ANALYSIS */
