@@ -216,7 +216,6 @@ LIMIT 1;
 /* check if query execution takes not less than 1000 ms */
 
 SELECT COUNT(*) FROM visits where animals_id = 4;
--- one more insertion requered
 
 /* Check queries runtime */
 
@@ -226,3 +225,14 @@ SELECT * FROM owner where email = 'owner_18327@mail.com';
 -- 1 sec = 1000ms can be considered as too much time for database query
 
 /* DATABASE PERFORMANCE ANALYSIS */
+
+/* Execution time should be >= 1000 */
+SELECT COUNT(*) FROM visits where animals_id = 4;
+-- 4 more insertion requered
+
+EXPLAIN ANALYSE SELECT COUNT(*) FROM visits WHERE animals_id = 4;
+
+EXPLAIN ANALYSE SELECT * FROM visits WHERE vets_id = 2;
+
+EXPLAIN ANALYSE SELECT * FROM owner WHERE email = 'owner_18327@mail.com';
+

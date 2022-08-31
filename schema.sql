@@ -76,7 +76,16 @@ ALTER TABLE visits DROP CONSTRAINT visits_pkey;
 INSERT INTO visits (animals_id, vets_id, visitation_date) SELECT * FROM (SELECT id FROM animals) animal_ids, (SELECT id FROM vets) vets_ids, generate_series('1980-01-01'::timestamp, '2021-01-01', '4 hours') visit_timestamp;
 
 -- This will add 2.500.000 owners with full_name = 'Owner <X>' and email = 'owner_<X>@email.com' (~2min approx.)
-INSERT INTO owner (full_name, email) select 'Owner ' || generate_series(1,2500000), 'owner_' || generate_series(1,2500000) || '@mail.com';
+INSERT INTO owner (full_name, email) SELECT 'Owner ' || generate_series(1,2500000), 'owner_' || generate_series(1,2500000) || '@mail.com';
 
 /* Index all the animals rows in the visits table */
 CREATE INDEX animals_index ON visits (animals_id DESC);
+
+/* drop an index created for animals */
+DROP INDEX animals_index;
+
+/* Index all the vets rows in the visits table */
+CREATE INDEX vets_index ON visits (vets_id DESC);
+
+/* Index all the vets rows in the visits table */
+CREATE INDEX email_index ON owner (email DESC);
